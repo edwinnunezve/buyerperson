@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universo de Audiencias - UFT</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-primary: #0A2342; /* Azul Marino */
+            --color-secondary: #F4F6F8; /* Gris Claro */
+            --color-accent: #FF6F61; /* Coral */
+            --color-accent-light: #FFF1F0; /* Coral muy claro para fondos */
+            --color-text: #333333;
+            --color-white: #FFFFFF;
+            --font-heading: 'Lora', serif;
+            --font-body: 'Inter', sans-serif;
+            --shadow: 0 4px 15px rgba(0,0,0,0.07);
+            --shadow-hover: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-body); color: var(--color-text); line-height: 1.6; background-color: var(--color-white); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
+        h1, h2, h3, h4, h5 { font-family: var(--font-heading); color: var(--color-primary); line-height: 1.2; }
+        h1 { font-size: 2.8rem; text-align: center; }
+        h2 { font-size: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--color-secondary); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.25rem; }
+        h4 { font-size: 1.3rem; margin-bottom: 1rem; }
+        h5 { font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;}
+
+        .header { background: var(--color-primary); color: var(--color-white); padding: 3rem 1.5rem; text-align: center; }
+        .header h1 { color: var(--color-white); }
+        .header p { max-width: 700px; margin: 1rem auto 0; font-size: 1.1rem; opacity: 0.9; }
+
+        .manifesto-section { background-color: var(--color-accent-light); border-radius: 12px; padding: 2.5rem; margin: 3rem 0; border: 1px solid #FFE5E2;}
+        .manifesto-section h2 { border-bottom: none; color: var(--color-accent); text-align: center; }
+        .manifesto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center; margin-top: 1.5rem; }
+        .manifesto-item h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+
+        .audience-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+        .audience-card { background-color: var(--color-white); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; overflow: hidden; }
+        .audience-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .card-image { width: 100%; height: 150px; object-fit: cover; background-color: var(--color-secondary); }
+        .card-content { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-content h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .card-archetype { font-size: 0.8rem; font-weight: 600; color: var(--color-accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem; }
+        .card-quote { font-size: 0.9rem; font-style: italic; color: #666; margin-top: auto; border-left: 3px solid var(--color-secondary); padding-left: 0.75rem; }
+        
+        /* --- MODAL STYLES --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 35, 66, 0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { background: var(--color-white); border-radius: 12px; padding: 0; width: 100%; max-width: 800px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-body { overflow-y: auto; padding: 2rem; }
+        .modal-close { position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; font-size: 2rem; line-height: 1; cursor: pointer; color: #999; z-index: 10; }
+        .modal-close:hover { color: var(--color-primary); }
+        .modal-header { padding: 2rem 2rem 1.5rem 2rem; position: relative; }
+        .modal-header h2 { margin-bottom: 0.25rem; font-size: 1.8rem; }
+        .modal-header .archetype { font-size: 1rem; font-weight: 700; color: var(--color-accent); text-transform: uppercase; }
+
+        .modal-section { margin-bottom: 2rem; }
+        .human-side { background: #F9FAFB; padding: 1.5rem; border-radius: 8px; border: 1px solid #E5E7EB; }
+        .human-side h4 { color: var(--color-primary); }
+        .human-item { display: flex; align-items: flex-start; margin-bottom: 1rem; }
+        .human-item:last-child { margin-bottom: 0; }
+        .human-item-icon { font-size: 1.5rem; margin-right: 1rem; color: var(--color-accent); line-height: 1.4; }
+        .human-item-text strong { display: block; color: var(--color-primary); font-weight: 600; font-size: 1rem; }
+        
+        .strategy-guide { background: var(--color-accent-light); padding: 1.5rem; border-radius: 8px; border: 1px solid #FFE5E2; }
+        .strategy-guide h4 { color: var(--color-accent); }
+        .strategy-item { margin-bottom: 1.5rem; }
+        .strategy-item h5 { color: var(--color-primary); }
+        .strategy-item p, .strategy-item ul { font-size: 0.95rem; }
+        .strategy-item ul { padding-left: 1.2rem; margin-top: 0.5rem; }
+        
+        .tactical-guide h4 { margin-top: 2rem; }
+        .tactical-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .detail-item h5 { color: #555; }
+        .detail-item p { background-color: var(--color-secondary); padding: 0.75rem; border-radius: 6px; font-size: 0.95rem; line-height: 1.5; }
+        .detail-item.full-width { grid-column: 1 / -1; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.6rem; }
+            .tactical-details-grid { grid-template-columns: 1fr; }
+        }
+
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--color-secondary);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-top: 3rem;
+        }
+        #summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        #summary-table th, #summary-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--color-secondary);
+            white-space: normal;
+        }
+        #summary-table th {
+            background-color: var(--color-secondary);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--color-primary);
+            white-space: nowrap;
+        }
+        #summary-table tbody tr:nth-child(even) {
+            background-color: #F9FAFB;
+        }
+        #summary-table tbody tr:hover {
+            background-color: var(--color-accent-light);
+        }
+        #summary-table td {
+            vertical-align: top;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Universo de Audiencias UFT</h1>
+        <p>Una guía centralizada para entender a quiénes nos dirigimos, qué necesitan y cómo podemos comunicarnos eficazmente con cada uno.</p>
+    </header>
+
+    <main class="container">
+        <section class="manifesto-section">
+            <h2>Nuestro Compromiso: La Guía de Nuestra Voz</h2>
+            <div class="manifesto-grid">
+                <div class="manifesto-item">
+                    <h3>Abierta</h3>
+                    <p>Somos transparentes, accesibles y hablamos con un lenguaje humano. Derribamos barreras para facilitar la conexión.</p>
+                </div>
+                <div class="manifesto-item">
+                    <h3>Convocante</h3>
+                    <p>No solo abrimos las puertas; invitamos activamente a participar. Creamos espacios y excusas para que nuestra comunidad se encuentre y co-cree.</p>
+                </div>
+                <div class="manifesto-item">
+                    <h3>Cultura Viva</h3>
+                    <p>Celebramos y compartimos las historias que nos hacen únicos. Somos una comunidad dinámica que aprende, crea y vibra en conjunto.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORÍAS DE AUDIENCIAS -->
+        
+        <section id="futuros-estudiantes">
+            <h2>Futuros Estudiantes</h2>
+            <div class="audience-grid">
+                <div class="audience-card" 
+                     data-title="Prospecto Admisión Pregrado" data-archetype="El Explorador Ambicioso" data-quote="Busco mi pasión y un futuro seguro."
+                     data-meta="Encontrar una carrera que le apasione y le garantice empleabilidad, viviendo una experiencia universitaria memorable."
+                     data-pain="Ansiedad por la decisión, exceso de información confusa, miedo a equivocarse y no encajar."
+                     data-interests="TikTok, Instagram, YouTube (vlogs estudiantiles), recomendaciones de pares, ferias vocacionales."
+                     data-tono="Empático y Entusiasta. Hablamos como un consejero cercano, no como una institución lejana. Usamos un lenguaje claro y respondemos a sus miedos con optimismo."
+                     data-activacion="<li>Sesiones 'Pregúntale a un Estudiante' en vivo por Instagram.</li><li>Crear un 'Tour Virtual por el Campus' en formato TikTok.</li><li>Compartir playlists de Spotify colaborativas para estudiar para la PAES.</li>"
+                     data-rol="Dirección de Admisión (Pregrado)" data-mensaje="Información de carreras, fechas clave, vida universitaria, becas y beneficios." data-area="Admisión Pregrado" data-frecuencia="2-3 por semana (campaña)">
+                    <img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Estudiante pregrado" class="card-image"><div class="card-content"><h3>Prospecto Admisión Pregrado</h3><p class="card-archetype">El Explorador Ambicioso</p><p class="card-quote">Busco mi pasión y un futuro seguro.</p></div>
+                </div>
+                <div class="audience-card"
+                    data-title="Prospecto Admisión Postgrado" data-archetype="La Profesional Ascendente" data-quote="Necesito un impulso para mi carrera."
+                    data-meta="Obtener un ascenso, mejorar su salario y construir una red de contactos de alto nivel."
+                    data-pain="Falta de tiempo, programas poco flexibles, dificultad para medir el ROI de la inversión."
+                    data-interests="LinkedIn, newsletters de industria, blogs de negocios (HBR), podcasts de liderazgo, webinars."
+                    data-tono="Profesional y Aspiracional. Demostramos el valor y el retorno de la inversión de forma clara y directa. Hablamos de futuro, liderazgo e impacto."
+                    data-activacion="<li>Webinars gratuitos con líderes de industria (no solo académicos) sobre 'El Futuro del Trabajo'.</li><li>Ofrecer una 'Masterclass Taster' gratuita de 45 minutos.</li><li>Conectar a postulantes con egresados exitosos de su misma área.</li>"
+                    data-rol="Dirección de Admisión (Postgrado)" data-mensaje="Info de diplomados/magísteres, charlas informativas, perfil de egreso, descuentos." data-area="Admisión Postgrado / Facultades" data-frecuencia="1-2 por semana (campaña)">
+                    <img src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Profesional" class="card-image"><div class="card-content"><h3>Prospecto Admisión Postgrado</h3><p class="card-archetype">La Profesional Ascendente</p><p class="card-quote">Necesito un impulso para mi carrera.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comunidad-activa" style="margin-top: 3rem;">
+            <h2>Comunidad Activa</h2>
+            <div class="audience-grid">
+                <div class="audience-card"
+                    data-title="Estudiante Activo (Pregrado)" data-archetype="El Conector Universitario" data-quote="¿Cuáles son mis notas y los eventos de esta semana?"
+                    data-meta="Aprobar sus ramos, mantenerse informado de la vida universitaria y equilibrar estudios con vida social."
+                    data-pain="Desorganización, perderse fechas importantes, no saber a quién acudir para resolver problemas."
+                    data-interests="Intranet universitaria, correos oficiales, grupos de WhatsApp/Discord, redes sociales de la U."
+                    data-tono="Servicial y Comunitario. Somos un facilitador que simplifica su día a día. Fomentamos la participación y el sentido de pertenencia."
+                    data-activacion="<li>Crear un 'Calendario Unificado' de eventos académicos y extracurriculares.</li><li>Campaña 'Conoce tu Campus' destacando servicios poco conocidos (apoyo psicológico, talleres).</li><li>Organizar concursos inter-carreras o hackathones.</li>"
+                    data-rol="Asuntos Estudiantiles (DAE) / Facultades" data-mensaje="Info. académica (notas, horarios), servicios, reglamentos, vida estudiantil." data-area="DAE / Secretarías de Estudio" data-frecuencia="Según necesidad (operacional)">
+                    <img src="https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Estudiante en biblioteca" class="card-image"><div class="card-content"><h3>Estudiante Activo (Pregrado)</h3><p class="card-archetype">El Conector Universitario</p><p class="card-quote">¿Mis notas y los eventos?</p></div>
+                </div>
+                <div class="audience-card"
+                    data-title="Estudiante Activo (Postgrado)" data-archetype="El Especialista Enfocado" data-quote="Busco networking y aplicación práctica."
+                    data-meta="Aplicar inmediatamente lo aprendido en su trabajo y ampliar su red profesional con compañeros y profesores."
+                    data-pain="Contenido poco práctico, falta de oportunidades de networking, dificultad para compatibilizar trabajo y estudio."
+                    data-interests="Plataforma de e-learning, eventos exclusivos de postgrado, LinkedIn, biblioteca digital."
+                    data-tono="Exclusivo y Colaborativo. Tratamos a nuestros estudiantes de postgrado como pares. Fomentamos la discusión y el intercambio de alto nivel."
+                    data-activacion="<li>Ciclos de 'Café con el Director del Programa' para feedback directo.</li><li>Crear un 'Directorio de Networking' exclusivo para estudiantes de postgrado.</li><li>Organizar 'Mesas Redondas' con casos de estudio reales presentados por ellos mismos.</li>"
+                    data-rol="Escuela de Postgrado / Facultades" data-mensaje="Info. académica, eventos exclusivos de postgrado, networking." data-area="Escuela de Postgrado / Facultades" data-frecuencia="Según necesidad (operacional)">
+                    <img src="https://images.pexels.com/photos/3184423/pexels-photo-3184423.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Estudiante de postgrado" class="card-image"><div class="card-content"><h3>Estudiante Activo (Postgrado)</h3><p class="card-archetype">El Especialista Enfocado</p><p class="card-quote">Busco networking y aplicación práctica.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="alumni" style="margin-top: 3rem;">
+            <h2>Alumni (Egresados)</h2>
+            <div class="audience-grid">
+                <div class="audience-card"
+                     data-title="Egresados (Beneficios)" data-archetype="El Profesional Conectado" data-quote="¿Qué beneficios y oportunidades hay para mí?"
+                     data-meta="Acceder a mejores oportunidades laborales y mantener una red de contactos valiosa."
+                     data-pain="Sentirse desconectado de la universidad, no enterarse de beneficios relevantes."
+                     data-interests="Bolsa de trabajo, eventos de networking, LinkedIn, descuentos en formación continua."
+                     data-tono="De Valor y Reconocimiento. Reconocemos su trayectoria y les ofrecemos beneficios tangibles. Mantenemos una relación de por vida."
+                     data-activacion="<li>Lanzar un 'Programa de Mentoring' donde egresados con experiencia guíen a los recién titulados.</li><li>Crear un 'Club de Beneficios Alumni' con descuentos en marcas aliadas.</li><li>Organizar 'Encuentros Alumni' por sector industrial.</li>"
+                     data-rol="Alumni UFT" data-mensaje="Oportunidades laborales, Networking, Beneficios exclusivos, Encuentros de egresados" data-area="Alumni UFT" data-frecuencia="1-2 por semana">
+                    <img src="https://images.pexels.com/photos/5905497/pexels-photo-5905497.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Egresado en evento" class="card-image"><div class="card-content"><h3>Egresados (Beneficios)</h3><p class="card-archetype">El Profesional Conectado</p><p class="card-quote">¿Qué beneficios y oportunidades hay?</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Egresados (Ed. Continua)" data-archetype="El Aprendiz Permanente" data-quote="Quiero seguir especializándome."
+                     data-meta="Mantenerse actualizado en su campo para seguir siendo competitivo en el mercado laboral."
+                     data-pain="No saber qué nuevos programas existen, pensar que los programas no son para ellos."
+                     data-interests="Webinars sobre nuevas tendencias, emails con programas recomendados, descuentos para egresados."
+                     data-tono="Asesor y Estratégico. Somos su partner de por vida en el aprendizaje. Les ayudamos a planificar su siguiente paso profesional."
+                     data-activacion="<li>Ofrecer 'Asesorías de Carrera' gratuitas para egresados.</li><li>Crear 'Rutas de Aprendizaje' personalizadas que conectan diplomados y magísteres.</li><li>Lanzar un podcast sobre 'Habilidades del Futuro' con nuestros académicos.</li>"
+                     data-rol="Alumni UFT" data-mensaje="Programas de postgrado y educación continua (Cross-selling)" data-area="Admisión Postgrado (en coordinación con Alumni)" data-frecuencia="1 por mes">
+                    <img src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Egresado mirando computador" class="card-image"><div class="card-content"><h3>Egresados (Ed. Continua)</h3><p class="card-archetype">El Aprendiz Permanente</p><p class="card-quote">Quiero seguir especializándome.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Egresados (Noticias)" data-archetype="El Embajador Informado" data-quote="Me enorgullece saber de mi universidad."
+                     data-meta="Sentir orgullo de pertenencia y mantenerse vinculado emocionalmente con su alma máter."
+                     data-pain="Recibir información irrelevante o puramente comercial; sentir que la U. sólo lo contacta para vender."
+                     data-interests="Newsletter institucional, logros de académicos, proyectos de impacto social, agenda cultural."
+                     data-tono="Inspirador y de Celebración. Compartimos las historias que generan orgullo. Celebramos los logros de la comunidad, no solo de la institución."
+                     data-activacion="<li>Crear una sección en el newsletter llamada 'Alumni Destacado del Mes'.</li><li>Invitar a egresados a charlas o eventos culturales como invitados de honor.</li><li>Compartir los proyectos de investigación de la U que están cambiando el mundo.</li>"
+                     data-rol="Comunicaciones" data-mensaje="Noticias institucionales de alto impacto, Agenda cultural abierta, Mensajes del Rector" data-area="Comunicaciones" data-frecuencia="2-3 por mes">
+                    <img src="https://images.pexels.com/photos/267507/pexels-photo-267507.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Noticias en un tablet" class="card-image"><div class="card-content"><h3>Egresados (Noticias)</h3><p class="card-archetype">El Embajador Informado</p><p class="card-quote">Me enorgullece saber de mi U.</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="audiencias-internas" style="margin-top: 3rem;">
+            <h2>Audiencias Internas</h2>
+            <div class="audience-grid">
+                <div class="audience-card"
+                     data-title="Funcionarios" data-archetype="El Colaborador Esencial" data-quote="Necesito la información administrativa al día."
+                     data-meta="Realizar su trabajo de forma eficiente y sentirse parte valorada de la comunidad."
+                     data-pain="Información dispersa, burocracia, no saber a quién preguntar, cambios de último minuto."
+                     data-interests="Correo interno, intranet, comunicados de RRHH, eventos de camaradería."
+                     data-tono="Claro, Respetuoso y Eficiente. Valoramos su tiempo. La información es precisa, fácil de encontrar y se entrega con anticipación."
+                     data-activacion="<li>Crear un 'Newsletter Interno Semanal' que centralice toda la información relevante.</li><li>Implementar un 'Buzón de Sugerencias' digital y transparente.</li><li>Organizar 'Desayunos con Rectoría' abiertos para funcionarios.</li>"
+                     data-rol="Recursos Humanos / Otras Unidades" data-mensaje="Comunicaciones internas, beneficios, desarrollo profesional, info. administrativa." data-area="Comunicaciones" data-frecuencia="Según necesidad (operacional)">
+                    <img src="https://images.pexels.com/photos/7792812/pexels-photo-7792812.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Funcionario" class="card-image"><div class="card-content"><h3>Funcionarios</h3><p class="card-archetype">El Colaborador Esencial</p><p class="card-quote">Información administrativa al día.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Funcionarios Docente" data-archetype="El Académico Integral" data-quote="Información relevante para mi labor y desarrollo."
+                     data-meta="Equilibrar docencia, investigación y gestión, además de crecer profesionalmente."
+                     data-pain="Exceso de carga administrativa, falta de tiempo, comunicación en silos entre departamentos."
+                     data-interests="Políticas académicas, oportunidades de investigación, fondos concursables, desarrollo profesional."
+                     data-tono="De Apoyo y Reconocimiento. Reconocemos su rol central en la misión de la U. Les facilitamos herramientas y celebramos sus logros académicos."
+                     data-activacion="<li>Crear un 'Fondo de Innovación Docente' para financiar nuevas metodologías de enseñanza.</li><li>Organizar 'Jornadas de Intercambio de Buenas Prácticas Docentes'.</li><li>Comunicar activamente sus publicaciones y apariciones en prensa.</li>"
+                     data-rol="Recursos Humanos / Vicerrectoría Académica" data-mensaje="Comunicaciones internas, beneficios, desarrollo profesional, info. administrativa." data-area="Comunicaciones" data-frecuencia="Según necesidad (operacional)">
+                    <img src="https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Profesor" class="card-image"><div class="card-content"><h3>Funcionarios Docente</h3><p class="card-archetype">El Académico Integral</p><p class="card-quote">Información para mi labor y desarrollo.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Docentes Horarios" data-archetype="El Mentor Flexible" data-quote="¿Cuál es mi horario? ¿Hay noticias importantes?"
+                     data-meta="Poder planificar sus clases y su tiempo personal con anticipación y claridad."
+                     data-pain="Cambios de horarios sin previo aviso, falta de información sobre recursos del aula."
+                     data-interests="Horarios, calendario académico, comunicados urgentes, normativas para estudiantes."
+                     data-tono="Directo, Preciso y Confiable. La información operacional es crítica. La entregamos sin rodeos, de forma oportuna y por el canal más eficiente."
+                     data-activacion="<li>Implementar un sistema de 'Alertas por SMS/WhatsApp' para cambios urgentes.</li><li>Crear un portal único y fácil de usar para consulta de horarios y salas.</li><li>Designar un 'Punto de Contacto' claro para resolver dudas operacionales.</li>"
+                     data-rol="Recursos Humanos / Vicerrectoría Académica" data-mensaje="Comunicaciones internas, beneficios, desarrollo profesional, info. administrativa." data-area="Comunicaciones" data-frecuencia="Según necesidad (operacional)">
+                    <img src="https://images.pexels.com/photos/6326377/pexels-photo-6326377.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Profesor horario" class="card-image"><div class="card-content"><h3>Docentes Horarios</h3><p class="card-archetype">El Mentor Flexible</p><p class="card-quote">¿Mi horario? ¿Noticias importantes?</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="aliados-publico" style="margin-top: 3rem;">
+            <h2>Aliados y Público General</h2>
+            <div class="audience-grid">
+                <div class="audience-card"
+                     data-title="Público General (Cultura)" data-archetype="El Ciudadano Cultural" data-quote="¿Qué actividades abiertas ofrece la universidad?"
+                     data-meta="Encontrar actividades culturales y de conocimiento gratuitas o de bajo costo para enriquecer su vida."
+                     data-pain="No enterarse de los eventos a tiempo, dificultad para inscribirse, poca información sobre cómo llegar."
+                     data-interests="Agenda cultural de la ciudad, redes sociales (eventos), prensa local, newsletter de extensión."
+                     data-tono="Inclusivo y Vibrante. Somos un actor cultural relevante en la ciudad. Invitamos a todos a ser parte de nuestra cultura viva."
+                     data-activacion="<li>Crear un 'Pasaporte Cultural UFT' que gamifique la asistencia a eventos.</li><li>Realizar 'Eventos en el Barrio' fuera del campus para acercar la cultura.</li><li>Aliarse con centros culturales locales para co-producir eventos.</li>"
+                     data-rol="Extensión y Cultura" data-mensaje="Agenda cultural y de extensión" data-area="Extensión y Cultura" data-frecuencia="1 por semana">
+                    <img src="https://images.pexels.com/photos/209948/pexels-photo-209948.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Evento cultural" class="card-image"><div class="card-content"><h3>Público General (Cultura)</h3><p class="card-archetype">El Ciudadano Cultural</p><p class="card-quote">¿Qué actividades abiertas hay?</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Público General (Noticias)" data-archetype="El Observador Institucional" data-quote="Quiero saber el impacto de la UFT en la sociedad."
+                     data-meta="Formarse una opinión sobre la relevancia y el aporte de la universidad a la comunidad."
+                     data-pain="Percibir a la universidad como una entidad cerrada y elitista, noticias poco transparentes."
+                     data-interests="Prensa nacional y local, reportajes de investigación, rankings universitarios, redes sociales."
+                     data-tono="Transparente y Relevante. Comunicamos nuestro impacto social con datos y rostros. Somos una institución abierta que rinde cuentas a la sociedad."
+                     data-activacion="<li>Publicar una 'Memoria de Impacto Social' anual en un formato interactivo y fácil de leer.</li><li>Crear una serie de videos cortos sobre 'Proyectos UFT que cambian vidas'.</li><li>Organizar 'Jornadas de Puertas Abiertas' temáticas.</li>"
+                     data-rol="Comunicaciones" data-mensaje="Noticias de posicionamiento de marca" data-area="Comunicaciones" data-frecuencia="1 por mes">
+                    <img src="https://images.pexels.com/photos/288477/pexels-photo-288477.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Noticias de prensa" class="card-image"><div class="card-content"><h3>Público General (Noticias)</h3><p class="card-archetype">El Observador Institucional</p><p class="card-quote">Saber el impacto de la UFT.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Aliados Estratégicos / Empresas" data-archetype="El Socio Colaborador" data-quote="Busco sinergias y proyectos de valor."
+                     data-meta="Generar proyectos de mutuo beneficio (I+D, prácticas, etc.) que potencien su negocio y la misión de la U."
+                     data-pain="No saber con quién contactarse, procesos burocráticos lentos, falta de seguimiento a las propuestas."
+                     data-interests="Eventos de industria, memorias anuales de la U., noticias de innovación, LinkedIn."
+                     data-tono="Colaborativo y Proactivo. Somos un partner estratégico, no un proveedor. Buscamos activamente oportunidades de colaboración y simplificamos los procesos."
+                     data-activacion="<li>Crear un 'Portal de Aliados' con puntos de contacto claros y un formulario simple.</li><li>Organizar 'Ruedas de Negocios' para conectar empresas con nuestros centros de investigación.</li><li>Lanzar un programa de 'Desafíos de Innovación Abierta' para que las empresas propongan problemas.</li>"
+                     data-rol="Vinculación con el Medio / Rectoría" data-mensaje="Proyectos de colaboración, convenios, noticias institucionales de alto nivel." data-area="Vinculación con el Medio" data-frecuencia="1 por mes">
+                    <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Reunión de negocios" class="card-image"><div class="card-content"><h3>Aliados Estratégicos</h3><p class="card-archetype">El Socio Colaborador</p><p class="card-quote">Busco sinergias y proyectos de valor.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Medios de Comunicación" data-archetype="El Curador de Noticias" data-quote="Necesito una fuente experta y noticias relevantes."
+                     data-meta="Encontrar historias con ángulo noticioso y acceder a voceros expertos para sus artículos."
+                     data-pain="Respuestas lentas del área de prensa, comunicados poco claros, falta de voceros disponibles."
+                     data-interests="Comunicados de prensa, conferencias, contacto directo con Comunicaciones, redes sociales (para tendencias)."
+                     data-tono="Ágil y Confiable. Somos una fuente experta y útil. Respondemos con rapidez, entregamos información clara y facilitamos el contacto con nuestros voceros."
+                     data-activacion="<li>Crear una 'Sala de Prensa Virtual' con todos los recursos (fotos, videos, comunicados).</li><li>Mantener un 'Directorio de Expertos UFT' actualizado y público para consulta.</li><li>Enviar 'Píldoras de Datos' o 'Cifras de la Semana' sobre temas de actualidad basados en nuestra investigación.</li>"
+                     data-rol="Comunicaciones" data-mensaje="Noticias de posicionamiento, proyectos de colaboración, convenios, noticias institucionales." data-area="Comunicaciones" data-frecuencia="Según necesidad">
+                    <img src="https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Micrófonos de prensa" class="card-image"><div class="card-content"><h3>Medios de Comunicación</h3><p class="card-archetype">El Curador de Noticias</p><p class="card-quote">Busco fuentes y noticias relevantes.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="summary" style="margin-top: 4rem;">
+            <h2>Resumen Holístico de Audiencias</h2>
+            <div class="table-container">
+                <table id="summary-table">
+                    <thead>
+                        <tr>
+                            <th>Audiencia</th>
+                            <th>Arquetipo</th>
+                            <th>Meta Principal</th>
+                            <th>Dolor / Frustración</th>
+                            <th>Intereses y Canales</th>
+                            <th>Rol Propietario de la Relaceión</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las filas se insertarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="audience-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="modal-close" id="modal-close-btn">×</button>
+                <h2 id="modal-title"></h2>
+                <p id="modal-archetype" class="archetype"></p>
+            </div>
+            
+            <div class="modal-body">
+                <section class="modal-section human-side">
+                    <h4>El Lado Humano</h4>
+                    <div class="human-item"><span class="human-item-icon">🎯</span><div class="human-item-text"><strong>Meta Principal</strong><p id="modal-meta"></p></div></div>
+                    <div class="human-item"><span class="human-item-icon">🔥</span><div class="human-item-text"><strong>Dolor / Frustración</strong><p id="modal-pain"></p></div></div>
+                    <div class="human-item"><span class="human-item-icon">💡</span><div class="human-item-text"><strong>Intereses y Canales Clave</strong><p id="modal-interests"></p></div></div>
+                </section>
+                
+                <section class="modal-section strategy-guide">
+                    <h4>Nuestra Estrategia de Tono y Acción</h4>
+                    <div class="strategy-item">
+                        <h5>🎤 Tono de Voz Sugerido</h5>
+                        <p id="modal-tono"></p>
+                    </div>
+                    <div class="strategy-item">
+                        <h5>🚀 Ideas de Activación Convocante</h5>
+                        <ul id="modal-activacion"></ul>
+                    </div>
+                </section>
+                
+                <section class="modal-section tactical-guide">
+                    <h4>Guía Táctica de Comunicación</h4>
+                    <div class="tactical-details-grid">
+                        <div class="detail-item"><h5>Rol Propietario</h5><p id="modal-rol"></p></div>
+                        <div class="detail-item"><h5>Área Emisora</h5><p id="modal-area"></p></div>
+                        <div class="detail-item full-width"><h5>Tipo de Mensaje</h5><p id="modal-mensaje"></p></div>
+                        <div class="detail-item full-width"><h5>Frecuencia Máxima</h5><p id="modal-frecuencia"></p></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.audience-card');
+            const modal = document.getElementById('audience-modal');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+
+            if (!modal) return;
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const data = card.dataset;
+                    
+                    document.getElementById('modal-title').textContent = data.title;
+                    document.getElementById('modal-archetype').textContent = data.archetype;
+                    
+                    document.getElementById('modal-meta').textContent = data.meta;
+                    document.getElementById('modal-pain').textContent = data.pain;
+                    document.getElementById('modal-interests').textContent = data.interests;
+
+                    document.getElementById('modal-tono').textContent = data.tono;
+                    document.getElementById('modal-activacion').innerHTML = data.activacion;
+
+                    document.getElementById('modal-rol').textContent = data.rol;
+                    document.getElementById('modal-mensaje').textContent = data.mensaje;
+                    document.getElementById('modal-area').textContent = data.area;
+                    document.getElementById('modal-frecuencia').textContent = data.frecuencia;
+
+                    modal.classList.add('active');
+                });
+            });
+
+            const closeModal = () => {
+                modal.classList.remove('active');
+            }
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
+            document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+        
+            const summaryTableBody = document.querySelector('#summary-table tbody');
+
+            if (summaryTableBody) {
+                cards.forEach(card => {
+                    const data = card.dataset;
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${data.title}</td>
+                        <td>${data.archetype}</td>
+                        <td>${data.meta}</td>
+                        <td>${data.pain}</td>
+                        <td>${data.interests}</td>
+                        <td>${data.area}</td>
+                    `;
+                    summaryTableBody.appendChild(row);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
