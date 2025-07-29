@@ -94,10 +94,11 @@
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid var(--color-secondary);
-            border-radius: 8px;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
             box-shadow: var(--shadow);
-            margin-top: 3rem;
+            margin-top: 2.5rem;
+            background-color: var(--color-white);
         }
         #summary-table {
             width: 100%;
@@ -105,26 +106,34 @@
             font-size: 0.9rem;
         }
         #summary-table th, #summary-table td {
-            padding: 0.75rem 1rem;
+            padding: 1rem 1.25rem;
             text-align: left;
-            border-bottom: 1px solid var(--color-secondary);
+            border-bottom: 1px solid #E5E7EB;
             white-space: normal;
         }
         #summary-table th {
-            background-color: var(--color-secondary);
-            font-family: var(--font-heading);
+            background-color: #F9FAFB;
+            font-family: var(--font-body);
             font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             color: var(--color-primary);
             white-space: nowrap;
         }
-        #summary-table tbody tr:nth-child(even) {
-            background-color: #F9FAFB;
+        #summary-table tbody tr:last-child td {
+            border-bottom: none;
         }
         #summary-table tbody tr:hover {
             background-color: var(--color-accent-light);
         }
         #summary-table td {
-            vertical-align: top;
+            vertical-align: middle;
+            color: #374151;
+        }
+        #summary-table td:first-child {
+            font-weight: 600;
+            color: var(--color-primary);
         }
     </style>
 </head>
@@ -281,30 +290,10 @@
         </section>
         
         <section id="aliados-publico" style="margin-top: 3rem;">
-            <h2>Aliados y Público General</h2>
+            <h2>Aliados</h2>
             <div class="audience-grid">
                 <div class="audience-card"
-                     data-title="Público General (Cultura)" data-archetype="El Ciudadano Cultural" data-quote="¿Qué actividades abiertas ofrece la universidad?"
-                     data-meta="Encontrar actividades culturales y de conocimiento gratuitas o de bajo costo para enriquecer su vida."
-                     data-pain="No enterarse de los eventos a tiempo, dificultad para inscribirse, poca información sobre cómo llegar."
-                     data-interests="Agenda cultural de la ciudad, redes sociales (eventos), prensa local, newsletter de extensión."
-                     data-tono="Inclusivo y Vibrante. Somos un actor cultural relevante en la ciudad. Invitamos a todos a ser parte de nuestra cultura viva."
-                     data-activacion="<li>Crear un 'Pasaporte Cultural UFT' que gamifique la asistencia a eventos.</li><li>Realizar 'Eventos en el Barrio' fuera del campus para acercar la cultura.</li><li>Aliarse con centros culturales locales para co-producir eventos.</li>"
-                     data-rol="Extensión y Cultura" data-mensaje="Agenda cultural y de extensión" data-area="Extensión y Cultura" data-frecuencia="1 por semana">
-                    <img src="https://images.pexels.com/photos/209948/pexels-photo-209948.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Evento cultural" class="card-image"><div class="card-content"><h3>Público General (Cultura)</h3><p class="card-archetype">El Ciudadano Cultural</p><p class="card-quote">¿Qué actividades abiertas hay?</p></div>
-                </div>
-                <div class="audience-card"
-                     data-title="Público General (Noticias)" data-archetype="El Observador Institucional" data-quote="Quiero saber el impacto de la UFT en la sociedad."
-                     data-meta="Formarse una opinión sobre la relevancia y el aporte de la universidad a la comunidad."
-                     data-pain="Percibir a la universidad como una entidad cerrada y elitista, noticias poco transparentes."
-                     data-interests="Prensa nacional y local, reportajes de investigación, rankings universitarios, redes sociales."
-                     data-tono="Transparente y Relevante. Comunicamos nuestro impacto social con datos y rostros. Somos una institución abierta que rinde cuentas a la sociedad."
-                     data-activacion="<li>Publicar una 'Memoria de Impacto Social' anual en un formato interactivo y fácil de leer.</li><li>Crear una serie de videos cortos sobre 'Proyectos UFT que cambian vidas'.</li><li>Organizar 'Jornadas de Puertas Abiertas' temáticas.</li>"
-                     data-rol="Comunicaciones" data-mensaje="Noticias de posicionamiento de marca" data-area="Comunicaciones" data-frecuencia="1 por mes">
-                    <img src="https://images.pexels.com/photos/288477/pexels-photo-288477.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Noticias de prensa" class="card-image"><div class="card-content"><h3>Público General (Noticias)</h3><p class="card-archetype">El Observador Institucional</p><p class="card-quote">Saber el impacto de la UFT.</p></div>
-                </div>
-                <div class="audience-card"
-                     data-title="Aliados Estratégicos / Empresas" data-archetype="El Socio Colaborador" data-quote="Busco sinergias y proyectos de valor."
+                     data-title="Aliados Estratégicos" data-archetype="El Socio Colaborador" data-quote="Busco sinergias y proyectos de valor."
                      data-meta="Generar proyectos de mutuo beneficio (I+D, prácticas, etc.) que potencien su negocio y la misión de la U."
                      data-pain="No saber con quién contactarse, procesos burocráticos lentos, falta de seguimiento a las propuestas."
                      data-interests="Eventos de industria, memorias anuales de la U., noticias de innovación, LinkedIn."
@@ -322,6 +311,42 @@
                      data-activacion="<li>Crear una 'Sala de Prensa Virtual' con todos los recursos (fotos, videos, comunicados).</li><li>Mantener un 'Directorio de Expertos UFT' actualizado y público para consulta.</li><li>Enviar 'Píldoras de Datos' o 'Cifras de la Semana' sobre temas de actualidad basados en nuestra investigación.</li>"
                      data-rol="Comunicaciones" data-mensaje="Noticias de posicionamiento, proyectos de colaboración, convenios, noticias institucionales." data-area="Comunicaciones" data-frecuencia="Según necesidad">
                     <img src="https://images.pexels.com/photos/518543/pexels-photo-518543.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Micrófonos de prensa" class="card-image"><div class="card-content"><h3>Medios de Comunicación</h3><p class="card-archetype">El Curador de Noticias</p><p class="card-quote">Busco fuentes y noticias relevantes.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Colegios" data-archetype="El Formador de Futuro" data-quote="Necesitamos orientar a nuestros estudiantes."
+                     data-meta="Ofrecer a sus estudiantes la mejor orientación vocacional y facilitar su transición a la educación superior."
+                     data-pain="Falta de material de apoyo, charlas poco inspiradoras, dificultad para coordinar visitas y actividades."
+                     data-interests="Ferias vocacionales, charlas de carreras, material de apoyo para orientadores, visitas al campus."
+                     data-tono="Colaborativo y de Apoyo. Somos un aliado en la formación de sus estudiantes. Les entregamos herramientas y experiencias que facilitan su labor."
+                     data-activacion="<li>Crear un 'Kit para Orientadores' con material descargable.</li><li>Diseñar 'Talleres Vocacionales Interactivos' para realizar en los colegios.</li><li>Organizar una 'Jornada de Puertas Abiertas' exclusiva para orientadores y directores.</li>"
+                     data-rol="Admisión Pregrado" data-mensaje="Oferta académica, charlas, material de apoyo, visitas." data-area="Admisión Pregrado" data-frecuencia="Según campaña">
+                    <img src="https://images.pexels.com/photos/4144101/pexels-photo-4144101.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Orientador vocacional" class="card-image"><div class="card-content"><h3>Colegios</h3><p class="card-archetype">El Formador de Futuro</p><p class="card-quote">Necesitamos orientar a nuestros estudiantes.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="publico-general" style="margin-top: 3rem;">
+            <h2>Público General</h2>
+            <div class="audience-grid">
+                <div class="audience-card"
+                     data-title="Público General (Noticias)" data-archetype="El Observador Institucional" data-quote="Quiero saber el impacto de la UFT en la sociedad."
+                     data-meta="Formarse una opinión sobre la relevancia y el aporte de la universidad a la comunidad."
+                     data-pain="Percibir a la universidad como una entidad cerrada y elitista, noticias poco transparentes."
+                     data-interests="Prensa nacional y local, reportajes de investigación, rankings universitarios, redes sociales."
+                     data-tono="Transparente y Relevante. Comunicamos nuestro impacto social con datos y rostros. Somos una institución abierta que rinde cuentas a la sociedad."
+                     data-activacion="<li>Publicar una 'Memoria de Impacto Social' anual en un formato interactivo y fácil de leer.</li><li>Crear una serie de videos cortos sobre 'Proyectos UFT que cambian vidas'.</li><li>Organizar 'Jornadas de Puertas Abiertas' temáticas.</li>"
+                     data-rol="Comunicaciones" data-mensaje="Noticias de posicionamiento de marca" data-area="Comunicaciones" data-frecuencia="1 por mes">
+                    <img src="https://images.pexels.com/photos/288477/pexels-photo-288477.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Noticias de prensa" class="card-image"><div class="card-content"><h3>Público General (Noticias)</h3><p class="card-archetype">El Observador Institucional</p><p class="card-quote">Saber el impacto de la UFT.</p></div>
+                </div>
+                <div class="audience-card"
+                     data-title="Público General (Cultura)" data-archetype="El Ciudadano Cultural" data-quote="¿Qué actividades abiertas ofrece la universidad?"
+                     data-meta="Encontrar actividades culturales y de conocimiento gratuitas o de bajo costo para enriquecer su vida."
+                     data-pain="No enterarse de los eventos a tiempo, dificultad para inscribirse, poca información sobre cómo llegar."
+                     data-interests="Agenda cultural de la ciudad, redes sociales (eventos), prensa local, newsletter de extensión."
+                     data-tono="Inclusivo y Vibrante. Somos un actor cultural relevante en la ciudad. Invitamos a todos a ser parte de nuestra cultura viva."
+                     data-activacion="<li>Crear un 'Pasaporte Cultural UFT' que gamifique la asistencia a eventos.</li><li>Realizar 'Eventos en el Barrio' fuera del campus para acercar la cultura.</li><li>Aliarse con centros culturales locales para co-producir eventos.</li>"
+                     data-rol="Extensión y Cultura" data-mensaje="Agenda cultural y de extensión" data-area="Extensión y Cultura" data-frecuencia="1 por semana">
+                    <img src="https://images.pexels.com/photos/209948/pexels-photo-209948.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Evento cultural" class="card-image"><div class="card-content"><h3>Público General (Cultura)</h3><p class="card-archetype">El Ciudadano Cultural</p><p class="card-quote">¿Qué actividades abiertas hay?</p></div>
                 </div>
             </div>
         </section>
