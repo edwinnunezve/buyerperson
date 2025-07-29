@@ -30,7 +30,20 @@
         .container { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem; }
         h1, h2, h3, h4, h5 { font-family: var(--font-heading); color: var(--color-primary); line-height: 1.2; }
         h1 { font-size: 2.8rem; text-align: center; }
-        h2 { font-size: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--color-secondary); padding-bottom: 0.5rem; }
+        h2 { 
+            font-size: 1.5rem; 
+            margin-bottom: 2rem; 
+            border-bottom: none; 
+            padding: 0.5rem 1rem;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            display: inline-block;
+            border-radius: 6px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
         h3 { font-size: 1.25rem; }
         h4 { font-size: 1.3rem; margin-bottom: 1rem; }
         h5 { font-family: var(--font-body); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;}
@@ -40,9 +53,16 @@
         .header p { max-width: 700px; margin: 1rem auto 0; font-size: 1.1rem; opacity: 0.9; }
 
         .manifesto-section { background-color: var(--color-accent-light); border-radius: 12px; padding: 2.5rem; margin: 3rem 0; border: 1px solid #FFE5E2;}
-        .manifesto-section h2 { border-bottom: none; color: var(--color-accent); text-align: center; }
+        .manifesto-section h2 { border-bottom: none; color: var(--color-accent); text-align: center; background-color: transparent; }
         .manifesto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center; margin-top: 1.5rem; }
         .manifesto-item h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+
+        .audience-category {
+            background-color: var(--color-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
 
         .audience-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
         .audience-card { background-color: var(--color-white); border-radius: 8px; box-shadow: var(--shadow); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; overflow: hidden; }
@@ -89,16 +109,61 @@
             h1 { font-size: 2.2rem; }
             h2 { font-size: 1.6rem; }
             .tactical-details-grid { grid-template-columns: 1fr; }
+
+            /* Responsive Table Styles */
+            #summary-table thead {
+                display: none; /* Ocultar encabezados en móvil */
+            }
+            #summary-table tr {
+                display: block;
+                margin-bottom: 1.5rem;
+                border: 1px solid #E5E7EB;
+                border-radius: 8px;
+                box-shadow: var(--shadow);
+                overflow: hidden;
+            }
+            #summary-table td {
+                display: flex; /* Usar flexbox para alinear */
+                justify-content: space-between; /* Espacio entre label y valor */
+                align-items: center; /* Alinear verticalmente */
+                text-align: left; /* Alinear el texto del valor a la izquierda */
+                padding: 1rem 1.25rem;
+                position: relative;
+                border-bottom: 1px solid #E5E7EB;
+            }
+            #summary-table td:last-child {
+                border-bottom: none;
+            }
+            #summary-table td::before {
+                content: attr(data-label); /* Usar el atributo data-label como contenido */
+                font-weight: 600;
+                color: var(--color-primary);
+                white-space: normal; /* Permitir que el texto se ajuste */
+                margin-right: 1rem; /* Espacio entre la etiqueta y el valor */
+                flex-basis: 40%; /* Asignar un ancho base a la etiqueta */
+                flex-shrink: 0; /* Evitar que la etiqueta se encoja */
+            }
+            #summary-table td:first-child {
+                background-color: var(--color-primary);
+                color: var(--color-white) !important; /* Asegura que el texto sea blanco */
+                font-weight: 700;
+                text-align: center;
+                display: block; /* Volver a block para centrar */
+            }
+            #summary-table td:first-child a {
+                color: var(--color-white); /* Enlaces dentro de la celda también blancos */
+                text-decoration: none;
+            }
+            #summary-table td:first-child::before {
+                content: ''; /* No mostrar etiqueta para la primera celda (Audiencia) */
+            }
         }
 
         .table-container {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            border: 1px solid #E5E7EB;
             border-radius: 12px;
-            box-shadow: var(--shadow);
             margin-top: 2.5rem;
-            background-color: var(--color-white);
         }
         #summary-table {
             width: 100%;
@@ -237,7 +302,7 @@
                      data-interests="Webinars sobre nuevas tendencias, emails con programas recomendados, descuentos para egresados."
                      data-tono="Asesor y Estratégico. Somos su partner de por vida en el aprendizaje. Les ayudamos a planificar su siguiente paso profesional."
                      data-activacion="<li>Ofrecer 'Asesorías de Carrera' gratuitas para egresados.</li><li>Crear 'Rutas de Aprendizaje' personalizadas que conectan diplomados y magísteres.</li><li>Lanzar un podcast sobre 'Habilidades del Futuro' con nuestros académicos.</li>"
-                     data-rol="Alumni UFT" data-mensaje="Programas de postgrado y educación continua (Cross-selling)" data-area="Admisión Postgrado (en coordinación con Alumni)" data-frecuencia="1 por mes">
+                     data-rol="Admisión Postgrado (en coordinación con Alumni)" data-mensaje="Programas de postgrado y educación continua (Cross-selling)" data-area="Admisión Postgrado (en coordinación con Alumni)" data-frecuencia="1 por mes">
                     <img src="https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Egresado mirando computador" class="card-image"><div class="card-content"><h3>Egresados (Ed. Continua)</h3><p class="card-archetype">El Aprendiz Permanente</p><p class="card-quote">Quiero seguir especializándome.</p></div>
                 </div>
                 <div class="audience-card"
@@ -362,7 +427,8 @@
                             <th>Meta Principal</th>
                             <th>Dolor / Frustración</th>
                             <th>Intereses y Canales</th>
-                            <th>Rol Propietario de la Relaceión</th>
+                            <th>Rol</th>
+                            <th>Frec.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -455,20 +521,24 @@
             modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
             document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
         
-            const summaryTableBody = document.querySelector('#summary-table tbody');
+            const summaryTable = document.getElementById('summary-table');
+            const summaryTableBody = summaryTable.querySelector('tbody');
 
             if (summaryTableBody) {
+                const headers = Array.from(summaryTable.querySelectorAll('thead th')).map(th => th.textContent);
+                
                 cards.forEach(card => {
                     const data = card.dataset;
                     const row = document.createElement('tr');
 
                     row.innerHTML = `
-                        <td>${data.title}</td>
-                        <td>${data.archetype}</td>
-                        <td>${data.meta}</td>
-                        <td>${data.pain}</td>
-                        <td>${data.interests}</td>
-                        <td>${data.area}</td>
+                        <td data-label="${headers[0]}">${data.title}</td>
+                        <td data-label="${headers[1]}">${data.archetype}</td>
+                        <td data-label="${headers[2]}">${data.meta}</td>
+                        <td data-label="${headers[3]}">${data.pain}</td>
+                        <td data-label="${headers[4]}">${data.interests}</td>
+                        <td data-label="${headers[5]}">${data.rol}</td>
+                        <td data-label="${headers[6]}">${data.frecuencia}</td>
                     `;
                     summaryTableBody.appendChild(row);
                 });
